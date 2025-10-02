@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- 🔍 Search Bar -->
+<form method="get" action="{% url 'haystack_search' %}" class="search-form mb-4">
+  <input type="text" name="q" placeholder="Search products, categories..."
+         value="{{ request.GET.q|default:'' }}">
+  <button type="submit"><i class="fas fa-search"></i></button>
+</form>
+
+<!-- 🌟 Hero Banner -->
+<div class="hero mb-5">
+  <div class="hero-content text-center">
+    <h1>Summer Sale is Live!</h1>
+    <p>Up to 50% off on all products. Limited time offer.</p>
+    <a href="{% url 'summer_sale' %}" class="btn btn-lg btn-primary">Shop Now <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<!-- 🔽 Filters -->
+<div class="filters d-flex justify-content-between flex-wrap mb-5">
+  <div class="filter-group me-3">
+    <label for="category">Category</label>
+    <select id="category" onchange="if(this.value) { window.location.href=this.value; }">
+      <option value="">All Categories</option>
+      {% for category in categories %}
+      <option value="{% url 'category_detail' category.slug %}">{{ category.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="filter-group me-3">
+    <label for="sort">Sort By</label>
+    <select id="sort">
+      <option value="featured">Featured</option>
+      <option value="price_low">Price: Low to High</option>
+      <option value="price_high">Price: High to Low</option>
+      <option value="rating">Customer Rating</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label for="price">Price Range</label>
+    <select id="price">
+      <option value="all">All Prices</option>
+      <option value="under25">Under Rs. 2500</option>
+      <option value="25_50">Rs. 2500 - 5000</option>
+      <option value="50_100">Rs. 5000 - 10,000</option>
+      <option value="over100">Over Rs. 10,000</option>
+    </select>
+  </div>
+</div>
+
+<!-- 🌟 Featured Products -->
+<div class="section-header d-flex justify-content-between align-items-center mb-3">
+  <h2>Featured Products</h2>
+  <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+</div>
+
+<div class="row">
+  {% for product in featured_products %}
+  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+    <div class="card h-100 shadow-sm border-0">
+      <a href="{% url 'product_detail' product.slug %}">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
+        {% endif %}
+      </a>
+      <div class="card-body d-flex flex-column">
+        <h6 class="card-title text-truncate">{{ product.name }}</h6>
+        <p class="text-muted mb-1">Rs. {{ product.price }}</p>
+        {% if product.old_price %}
+          <small class="text-decoration-line-through text-danger">Rs. {{ product.old_price }}</small>
+        {% endif %}
+        <div class="mt-auto">
+          <!-- Add to Cart -->
+          <form method="post" action="{% url 'add_to_cart' product.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+          </form>
+          <!-- Quick Order -->
+          <form method="post" action="{% url 'place_order' %}" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button type="submit" class="btn btn-sm btn-success">
+              <i class="fas fa-check"></i> Order Now
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+    <p>No featured products available.</p>
+  {% endfor %}
+</div>
+
+<!-- 🛒 All Products -->
+<div class="section-header d-flex justify-content-between align-items-center mb-3">
+  <h2>All Products</h2>
+  <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+</div>
+
+<div class="row">
+  {% for product in all_products %}
+  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+    <div class="card h-100 shadow-sm border-0">
+      <a href="{% url 'product_detail' product.slug %}">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
+        {% endif %}
+      </a>
+      <div class="card-body d-flex flex-column">
+        <h6 class="card-title text-truncate">{{ product.name }}</h6>
+        <p class="text-muted mb-1">Rs. {{ product.price }}</p>
+        {% if product.old_price %}
+          <small class="text-decoration-line-through text-danger">Rs. {{ product.old_price }}</small>
+        {% endif %}
+        <div class="mt-auto">
+          <!-- Add to Cart -->
+          <form method="post" action="{% url 'add_to_cart' product.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+          </form>
+          <!-- Quick Order -->
+          <form method="post" action="{% url 'place_order' %}" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button type="submit" class="btn btn-sm btn-success">
+              <i class="fas fa-check"></i> Order Now
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+    <p>No products available.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

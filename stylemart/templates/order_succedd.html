@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load currency %}
+
+{% block content %}
+<h2>Order Successful 🎉</h2>
+<p>Thank you for your order, {{ order.user.userprofile.full_name|default:order.user.username }}!</p>
+
+<p>We’ll deliver your products to: {{ order.address }}</p>
+<p>Order ID: {{ order.id }}</p>
+<a href="{% url 'home' %}" class="btn btn-secondary">Continue Shopping</a>
+{% endblock %}

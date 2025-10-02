@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load currency %}
+{% block content %}
+
+  <div class="container">
+    <h2>Search Results</h2>
+
+    {% if query %}
+      <p>Results for "<strong>{{ query }}</strong>":</p>
+
+      <div class="product-grid">
+        {% for result in page.object_list %}
+          {% with product=result.object %}
+            <div class="product-card">
+              <a href="{% url 'product_detail' product.slug %}">
+                {% if product.image %}
+                  <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+                <h3>{{ product.name }}</h3>
+              </a>
+              <p>Category: {{ product.category.name }}</p>
+              <p>Price: ${{ product.price }}</p>
+            </div>
+          {% endwith %}
+        {% empty %}
+          <p>No products found.</p>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        {% if page.has_previous %}
+          <a href="?q={{ query }}&page={{ page.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+
+        {% if page.has_next %}
+          <a href="?q={{ query }}&page={{ page.next_page_number }}">Next</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <p>Please enter a search term.</p>
+    {% endif %}
+  </div>
+{% endblock %}

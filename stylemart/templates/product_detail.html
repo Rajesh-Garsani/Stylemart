@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="product-detail-container">
+
+    <!-- Left: Product Image -->
+    <div class="product-gallery">
+      <div class="main-image">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'images/placeholder.png' %}" alt="No image">
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Right: Product Info -->
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="product-category">Category: {{ product.category.name }}</p>
+
+      {% if product.old_price %}
+        <p class="old-price">Rs. {{ product.old_price }}</p>
+      {% endif %}
+      <p class="current-price">Rs. {{ product.price }}</p>
+
+      <p class="product-description">{{ product.description }}</p>
+
+      <div class="product-rating">
+        {% for i in "12345" %}
+          {% if forloop.counter <= product.rating|default:0 %}
+            <i class="fas fa-star text-warning"></i>
+          {% else %}
+            <i class="far fa-star text-warning"></i>
+          {% endif %}
+        {% endfor %}
+        <span>({{ product.rating|default:"0" }})</span>
+      </div>
+
+      <div class="product-actions">
+        <form method="post" action="{% url 'add_to_cart' product.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-cart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+        </form>
+        <form method="post" action="{% url 'place_order' %}">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-check"></i> Order Now
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

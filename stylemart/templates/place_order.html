@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load currency %}
+{% block content %}
+
+<h2>Checkout</h2>
+<form method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label>Full Name</label>
+    <input type="text" name="full_name" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label>Address</label>
+    <textarea name="address" class="form-control" required></textarea>
+  </div>
+  <div class="form-group">
+    <label>Phone</label>
+    <input type="text" name="phone" class="form-control" required>
+  </div>
+    <input type="radio" name="payment_method" value="COD" checked> Cash on Delivery
+    <input type="radio" name="payment_method" value="JazzCash"> JazzCash
+
+  <button type="submit" class="btn btn-primary">Place Order</button>
+</form>
+{% endblock %}

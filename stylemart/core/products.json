@@ -1,0 +1,292 @@
+[
+  {
+    "model": "shop.category",
+    "pk": 1,
+    "fields": {
+      "name": "Smartphones"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 2,
+    "fields": {
+      "name": "Laptops"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 3,
+    "fields": {
+      "name": "Headphones"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 4,
+    "fields": {
+      "name": "Smartwatches"
+    }
+  },
+  {
+    "model": "shop.category",
+    "pk": 5,
+    "fields": {
+      "name": "Cameras"
+    }
+  },
+
+  {
+    "model": "shop.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Galaxy S23",
+      "description": "High-performance Android smartphone with 6.1-inch AMOLED display, 50MP camera, and 8GB RAM.",
+      "price": 899
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "iPhone 15",
+      "description": "Latest Apple iPhone with A17 chip, 6.7-inch OLED display, dual camera, and 128GB storage.",
+      "price": 1099
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "name": "OnePlus 12",
+      "description": "Sleek flagship with 6.7-inch Fluid AMOLED, Snapdragon 8 Gen 3, and fast 100W charging.",
+      "price": 749
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 4,
+    "fields": {
+      "category": 1,
+      "name": "Pixel 8",
+      "description": "Google phone with 50MP camera, stock Android, and AI-powered photography features.",
+      "price": 799
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "name": "Xiaomi 14",
+      "description": "Affordable flagship with 6.6-inch AMOLED display, Snapdragon 8+ Gen 2, 12GB RAM.",
+      "price": 699
+    }
+  },
+
+  {
+    "model": "shop.product",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "name": "MacBook Air M2",
+      "description": "Lightweight Apple laptop with M2 chip, 13.6-inch Retina display, 8GB RAM, 256GB SSD.",
+      "price": 1199
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 7,
+    "fields": {
+      "category": 2,
+      "name": "Dell XPS 15",
+      "description": "High-end Windows laptop with 15.6-inch OLED, Intel i7, 16GB RAM, 512GB SSD.",
+      "price": 1499
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 8,
+    "fields": {
+      "category": 2,
+      "name": "HP Spectre x360",
+      "description": "Convertible 2-in-1 laptop with touchscreen, Intel i7, 16GB RAM, 512GB SSD.",
+      "price": 1399
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 9,
+    "fields": {
+      "category": 2,
+      "name": "Lenovo ThinkPad X1 Carbon",
+      "description": "Business ultrabook with Intel i7, 14-inch display, 16GB RAM, 1TB SSD.",
+      "price": 1599
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 10,
+    "fields": {
+      "category": 2,
+      "name": "Asus ROG Zephyrus G14",
+      "description": "Gaming laptop with AMD Ryzen 9, NVIDIA RTX 4060, 16GB RAM, 1TB SSD.",
+      "price": 1699
+    }
+  },
+
+  {
+    "model": "shop.product",
+    "pk": 11,
+    "fields": {
+      "category": 3,
+      "name": "Sony WH-1000XM5",
+      "description": "Noise-canceling over-ear headphones with 30 hours battery life and premium sound.",
+      "price": 399
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 12,
+    "fields": {
+      "category": 3,
+      "name": "Bose QuietComfort 45",
+      "description": "Comfort-focused headphones with ANC, 24 hours battery, and lightweight design.",
+      "price": 349
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 13,
+    "fields": {
+      "category": 3,
+      "name": "Apple AirPods Pro 2",
+      "description": "True wireless earbuds with spatial audio, ANC, and sweat resistance.",
+      "price": 249
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 14,
+    "fields": {
+      "category": 3,
+      "name": "Sennheiser HD 560S",
+      "description": "Audiophile open-back headphones with studio-grade sound quality.",
+      "price": 199
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 15,
+    "fields": {
+      "category": 3,
+      "name": "JBL Tune 750BTNC",
+      "description": "Affordable Bluetooth over-ear headphones with noise cancellation and 15-hour battery.",
+      "price": 129
+    }
+  },
+
+  {
+    "model": "shop.product",
+    "pk": 16,
+    "fields": {
+      "category": 4,
+      "name": "Apple Watch Series 9",
+      "description": "Fitness and health-focused smartwatch with ECG, GPS, and blood oxygen tracking.",
+      "price": 399
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 17,
+    "fields": {
+      "category": 4,
+      "name": "Samsung Galaxy Watch 6",
+      "description": "Stylish smartwatch with health monitoring, sleep tracking, and LTE option.",
+      "price": 349
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 18,
+    "fields": {
+      "category": 4,
+      "name": "Garmin Venu 2",
+      "description": "GPS smartwatch for fitness enthusiasts with AMOLED display and long battery life.",
+      "price": 349
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 19,
+    "fields": {
+      "category": 4,
+      "name": "Fitbit Versa 4",
+      "description": "Affordable health tracker with heart rate monitoring, sleep tracking, and fitness modes.",
+      "price": 229
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 20,
+    "fields": {
+      "category": 4,
+      "name": "Fossil Gen 7",
+      "description": "Hybrid smartwatch with customizable faces, notifications, and activity tracking.",
+      "price": 299
+    }
+  },
+
+  {
+    "model": "shop.product",
+    "pk": 21,
+    "fields": {
+      "category": 5,
+      "name": "Canon EOS R6",
+      "description": "Full-frame mirrorless camera with 20MP sensor, 4K video, and fast autofocus.",
+      "price": 2499
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 22,
+    "fields": {
+      "category": 5,
+      "name": "Sony Alpha a7 IV",
+      "description": "High-resolution mirrorless camera with 33MP, 4K video, and excellent low-light performance.",
+      "price": 2799
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 23,
+    "fields": {
+      "category": 5,
+      "name": "Nikon Z6 II",
+      "description": "Full-frame mirrorless camera with 24MP sensor, 4K video, and dual card slots.",
+      "price": 1999
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 24,
+    "fields": {
+      "category": 5,
+      "name": "Fujifilm X-T5",
+      "description": "APS-C mirrorless camera with 40MP, film simulation modes, and lightweight body.",
+      "price": 1699
+    }
+  },
+  {
+    "model": "shop.product",
+    "pk": 25,
+    "fields": {
+      "category": 5,
+      "name": "GoPro HERO12 Black",
+      "description": "Action camera with 5.3K video, waterproof design, and built-in stabilization.",
+      "price": 499
+    }
+  }
+]

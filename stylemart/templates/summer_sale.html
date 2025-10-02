@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load currency %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="alert alert-danger text-center fs-4 fw-bold">
+    🎉 Summer Sale is Live! Up to 50% off on selected products 🎉
+  </div>
+
+  <div class="row">
+    {% for product in products %}
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 shadow-sm text-center">
+
+          <!-- Image as link -->
+          <a href="{% url 'product_detail' product.slug %}">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+          </a>
+
+          <div class="card-body">
+            <!-- Name as link -->
+            <h5 class="card-title">
+              <a href="{% url 'product_detail' product.slug %}" class="text-decoration-none text-dark">
+                {{ product.name }}
+              </a>
+            </h5>
+
+            <!-- Price -->
+            {% if product.old_price %}
+              <p class="text-danger fw-bold">
+                PKR {{ product.price }}
+                <del class="text-muted">PKR {{ product.old_price }}</del>
+              </p>
+            {% else %}
+              <p>PKR {{ product.price }}</p>
+            {% endif %}
+
+            <!-- Badge -->
+            {% if product.badge and product.badge != "NONE" %}
+              <span class="badge bg-warning text-dark">{{ product.badge }}</span>
+            {% endif %}
+          </div>
+
+          <div class="card-footer bg-white border-0">
+            <!-- Add to Cart -->
+            <form method="post" action="{% url 'add_to_cart' product.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-success btn-sm">Add to Cart</button>
+            </form>
+
+            <!-- Place Order -->
+            <form method="post" action="{% url 'place_order' %}" class="d-inline">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button type="submit" class="btn btn-primary btn-sm">Order Now</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

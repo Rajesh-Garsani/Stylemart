@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% load currency %}
+{% block content %}
+
+<div class="section-header">
+  <h2>{{ category.name }}</h2>
+</div>
+
+<ul class="product-grid">
+  {% for product in products %}
+  <li class="product-card">
+    <a href="{% url 'product_detail' product.slug %}">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+      {% else %}
+        <img src="{% static 'images/placeholder.png' %}" alt="No image" class="product-image">
+      {% endif %}
+    </a>
+    <div class="product-info">
+      <h3 class="product-title">
+        <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
+      </h3>
+      <h4 class="product-price">${{ product.price }}</h4>
+    </div>
+  </li>
+  {% empty %}
+  <p>No products in this category.</p>
+  {% endfor %}
+</ul>
+{% endblock %}

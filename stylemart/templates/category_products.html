@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load currency %}
+
+<h2>{{ category.name }}</h2>
+<div class="row">
+  {% for product in products %}
+  <div class="col-md-3 mb-4">
+    <div class="card">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+      {% else %}
+      <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">${{ product.price|floatformat:2 }}</p>
+
+        <!-- Fixed: Add to Cart POST form -->
+        <form method="post" action="{% url 'add_to_cart' product.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+        </form>
+
+        <!-- Order Now -->
+        <form method="post" action="{% url 'place_order' %}" style="margin-top:8px;">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <button type="submit" class="btn btn-sm btn-success">Order Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

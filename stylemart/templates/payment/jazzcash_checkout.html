@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center mt-5">
+  <h3>Redirecting to JazzCash...</h3>
+  <p>Please wait while we process your payment.</p>
+
+  <form id="jazzcashForm" method="post" action="{{ action_url }}">
+    {% for key, value in payload.items %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+    <noscript>
+      <button type="submit" class="btn btn-primary">Click here if not redirected</button>
+    </noscript>
+  </form>
+</div>
+
+<script>
+  document.getElementById("jazzcashForm").submit();
+</script>
+{% endblock %}
