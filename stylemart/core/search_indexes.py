@@ -1,3 +1,4 @@
+import datetime
 from haystack import indexes
 from .models import Product
 
@@ -9,3 +10,6 @@ class ProductIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Product
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()

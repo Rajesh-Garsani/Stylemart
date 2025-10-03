@@ -283,14 +283,15 @@ def product_list(request):
         products = products.filter(category__slug=category_slug)
 
     # Price filter
-    if price_range == "under25":
-        products = products.filter(price__lt=25)
-    elif price_range == "25_50":
-        products = products.filter(price__gte=25, price__lte=50)
-    elif price_range == "50_100":
-        products = products.filter(price__gte=50, price__lte=100)
-    elif price_range == "over100":
-        products = products.filter(price__gt=100)
+    if price_range == "under25000":
+        products = products.filter(price__lt=25000)
+    elif price_range == "25000_100000":
+        products = products.filter(price__gte=25000, price__lte=100000)
+    elif price_range == "100000_200000":
+        products = products.filter(price__gte=100000, price__lte=200000)
+    elif price_range == "over200000":
+        products = products.filter(price__gt=200000)
+
 
 
     if sort == "price_low":
