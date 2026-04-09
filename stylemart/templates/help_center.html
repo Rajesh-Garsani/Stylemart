@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <h1>Help Center</h1>
+  <p class="lead">Find answers to common questions or get in touch with our support team.</p>
+
+  <!-- Dynamic Topics from Admin -->
+  <div class="help-topics">
+    {% for topic in topics %}
+      <div class="topic border p-3 mb-3 rounded bg-light shadow-sm">
+        <h3>{{ topic.title }}</h3>
+        <p>{{ topic.content }}</p>
+      </div>
+    {% empty %}
+      <p>No help topics available. Please check back later.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Contact Form -->
+  <div class="mt-5">
+    <h2>Contact Us</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group mb-3">
+        <label for="name">Your Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="email">Your Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="message">Message</label>
+        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

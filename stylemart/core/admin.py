@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Category, Product, UserProfile, Cart, Order, OrderItem
+from .models import HelpTopic
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -31,3 +32,12 @@ admin.site.register(UserProfile)
 admin.site.register(Cart)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
+
+
+
+
+
+@admin.register(HelpTopic)
+class HelpTopicAdmin(admin.ModelAdmin):
+    list_display = ("title", "created_at")
+    search_fields = ("title", "content")

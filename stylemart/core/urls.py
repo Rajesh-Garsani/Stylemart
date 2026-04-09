@@ -17,5 +17,10 @@ urlpatterns = [
     path("order/", views.place_order, name="place_order"),
     path("order/confirmation/<int:order_id>/", views.order_confirmation, name="order_confirmation"),
     path("orders/", views.order_history, name="order_history"),
+    path("wishlist/", views.view_wishlist, name="view_wishlist"),
+    path("wishlist/add/<int:product_id>/", views.add_to_wishlist, name="add_to_wishlist"),
+    path("wishlist/remove/<int:product_id>/", views.remove_from_wishlist, name="remove_from_wishlist"),
     path("payment/jazzcash/return/", views.jazzcash_return, name="jazzcash_return"),
+    path("help-center/", views.help_center, name="help_center"),
+    path("api/chatbot/", views.chatbot_api, name="chatbot_api"),
 ]

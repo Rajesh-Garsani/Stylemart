@@ -1,0 +1,30 @@
+{# templates/chatbot/_product_list_partial.html #}
+{% load static %}
+{% load static %}
+<div class="chatbot-product-grid" style="display:flex;flex-wrap:wrap;gap:12px;">
+  {% for product in products %}
+    <div class="chatbot-product-card" style="width:140px;border:1px solid #eee;padding:8px;border-radius:8px;background:#fff;">
+      <a href="{% url 'product_detail' product.slug %}" target="_blank" style="text-decoration:none;color:inherit;">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" style="width:100%;height:100px;object-fit:contain;border-radius:6px;" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'images/placeholder.png' %}" style="width:100%;height:100px;object-fit:contain;border-radius:6px;" alt="No image">
+        {% endif %}
+        <div style="font-size:0.9rem;font-weight:600;margin-top:6px;">{{ product.name|truncatechars:30 }}</div>
+        <div style="color:#888;font-size:0.85rem;margin-top:4px;">Rs. {{ product.price }}</div>
+      </a>
+      <div style="margin-top:8px;display:flex;gap:6px;">
+        <form method="post" action="{% url 'add_to_cart' product.id %}" style="flex:1;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm" style="font-size:0.8rem;padding:6px 6px;">Add</button>
+        </form>
+        <form method="post" action="{% url 'add_to_wishlist' product.id %}" style="flex:1;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm" style="font-size:0.8rem;padding:6px 6px;">♥</button>
+        </form>
+      </div>
+    </div>
+  {% empty %}
+    <p>No products found.</p>
+  {% endfor %}
+</div>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% load currency %}
+{% block content %}
+<div class="container my-5">
+  <h2>Your Wishlist</h2>
+  {% if wishlist_items %}
+    <div class="product-grid">
+      {% for item in wishlist_items %}
+        <div class="product-card">
+          <a href="{% url 'product_detail' item.product.slug %}">
+            <img src="{{ item.product.image.url }}" class="product-image" alt="{{ item.product.name }}">
+          </a>
+          <div class="product-info">
+            <h5><a href="{% url 'product_detail' item.product.slug %}">{{ item.product.name }}</a></h5>
+            <p class="product-price">Rs. {{ item.product.price }}</p>
+          </div>
+          <div class="product-actions">
+            <form method="post" action="{% url 'add_to_cart' item.product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-cart">Add to Cart</button>
+            </form>
+            <form method="post" action="{% url 'remove_from_wishlist' item.product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-wishlist">Remove</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>You have no items in your wishlist.</p>
+  {% endif %}
+</div>
+{% endblock %}

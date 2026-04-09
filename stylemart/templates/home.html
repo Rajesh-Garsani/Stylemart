@@ -2,159 +2,161 @@
 {% load static %}
 {% block content %}
 
-<!-- 🔍 Search Bar -->
-<form method="get" action="{% url 'haystack_search' %}" class="search-form mb-4">
-  <input type="text" name="q" placeholder="Search products, categories..."
-         value="{{ request.GET.q|default:'' }}">
-  <button type="submit"><i class="fas fa-search"></i></button>
-</form>
+<div class="container mt-4">
 
-<!-- 🌟 Hero Banner -->
-<div class="hero mb-5">
-  <div class="hero-content text-center">
-    <h1>Summer Sale is Live!</h1>
-    <p>Up to 50% off on all products. Limited time offer.</p>
-    <a href="{% url 'summer_sale' %}" class="btn btn-lg btn-primary">Shop Now <i class="fas fa-arrow-right"></i></a>
-  </div>
-</div>
-
-<form method="get" action="{% url 'product_list' %}" class="filters d-flex justify-content-between flex-wrap mb-5">
-
-  <!-- Category Filter -->
-  <div class="filter-group me-3">
-    <label for="category">Category</label>
-    <select id="category" name="category" onchange="this.form.submit()">
-      <option value="">All Categories</option>
-      {% for category in categories %}
-        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected="selected"{% endif %}>
-          {{ category.name }}
-        </option>
-      {% endfor %}
-    </select>
+  <div class="hero mb-5 rounded shadow text-white p-5 text-center position-relative" style="background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;">
+    <div class="position-relative z-index-2">
+        <h1 class="display-5 fw-bold">Summer Sale is Live!</h1>
+        <p class="lead mb-4">Up to 50% off on all products. Limited time offer.</p>
+        <a href="{% url 'summer_sale' %}" class="btn btn-lg btn-primary rounded-pill px-4 shadow">Shop Now <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
   </div>
 
-  <!-- Sort By Filter -->
-  <div class="filter-group me-3">
-    <label for="sort">Sort By</label>
-    <select id="sort" name="sort" onchange="this.form.submit()">
-      <option value="">Featured</option>
-      <option value = "price_low" {% if request.GET.sort == price_low %}selected="selected"{% endif %}>
-        Price: Low to High
-      </option>
-      <option value="price_high" {% if request.GET.sort == price_high %}selected="selected"{% endif %}>
-        Price: High to Low
-      </option>
-    </select>
+  <div class="card shadow-sm border-0 mb-5">
+    <div class="card-body">
+      <form method="get" action="{% url 'product_list' %}" class="row g-3 align-items-end">
+
+        <div class="col-md-4 col-sm-6">
+          <label for="category" class="form-label fw-bold text-dark">Category</label>
+          <select id="category" name="category" class="form-select" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+              <option value="{{ category.slug }}" {% if request.GET.category == category.slug %} selected {% endif %}>
+                {{ category.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+          <label for="sort" class="form-label fw-bold text-dark">Sort By</label>
+          <select id="sort" name="sort" class="form-select" onchange="this.form.submit()">
+            <option value="">Featured</option>
+            <option value="price_low" {% if request.GET.sort == 'price_low' %} selected {% endif %}>
+              Price: Low to High
+            </option>
+            <option value="price_high" {% if request.GET.sort == 'price_high' %} selected {% endif %}>
+              Price: High to Low
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+          <label for="price" class="form-label fw-bold text-dark">Price Range</label>
+          <select id="price" name="price" class="form-select" onchange="this.form.submit()">
+            <option value="all" {% if request.GET.price == 'all' %} selected {% endif %}>All Prices</option>
+            <option value="under25000" {% if request.GET.price == 'under25000' %} selected {% endif %}>Under Rs. 25,000</option>
+            <option value="25000_100000" {% if request.GET.price == '25000_100000' %} selected {% endif %}>Rs. 25,000 - 100,000</option>
+            <option value="100000_200000" {% if request.GET.price == '100000_200000' %} selected {% endif %}>Rs. 100,000 - 200,000</option>
+            <option value="over200000" {% if request.GET.price == 'over200000' %} selected {% endif %}>Over Rs. 200,000</option>
+          </select>
+        </div>
+
+      </form>
+    </div>
   </div>
 
-  <!-- Price Range Filter -->
-  <div class="filter-group">
-    <label for="price">Price Range</label>
-    <select id="price" name="price" onchange="this.form.submit()">
-      <option value="all" {% if request.GET.price == all %}selected="selected"{% endif %}>All Prices</option>
-      <option value="under25000" {% if request.GET.price == under25000 %}selected="selected"{% endif %}>Under Rs. under25000</option>
-      <option value="25000_100000" {% if request.GET.price == 25000_100000 %}selected="selected"{% endif %}>Rs. 25000_100000</option>
-      <option value="100000_200000" {% if request.GET.price == 100000_200000 %}selected="selected"{% endif %}>Rs. 100000_200000</option>
-      <option value="over200000" {% if request.GET.price == over200000 %}selected="selected"{% endif %}>Over Rs. 20,0000</option>
-    </select>
-  </div>
+  <h3 class="mb-4 fw-bold border-bottom pb-2">Featured Products</h3>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+    {% for product in featured_products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm border-0 position-relative">
 
-</form>
+        <form method="post" action="{% url 'add_to_wishlist' product.id %}" class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-light text-danger rounded-circle shadow-sm d-flex align-items-center justify-content-center" title="Add to Wishlist" style="width: 35px; height: 35px;">
+              <i class="fas fa-heart"></i>
+          </button>
+        </form>
 
-<!-- 🌟 Featured Products -->
+        <a href="{% url 'product_detail' product.slug %}">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top p-3 bg-white" style="height: 200px; object-fit: contain;" alt="{{ product.name }}">
+          {% else %}
+            <img src="{% static 'images/placeholder.png' %}" class="card-img-top p-3 bg-white" style="height: 200px; object-fit: contain;" alt="No image">
+          {% endif %}
+        </a>
 
+        <div class="card-body d-flex flex-column text-center bg-light rounded-bottom">
+          <h6 class="card-title text-truncate mb-2">
+             <a href="{% url 'product_detail' product.slug %}" class="text-dark text-decoration-none fw-bold">{{ product.name }}</a>
+          </h6>
 
+          <p class="text-danger fw-bold mb-1 fs-5">Rs. {{ product.price }}</p>
+          {% if product.old_price %}
+            <small class="text-decoration-line-through text-muted mb-3">Rs. {{ product.old_price }}</small>
+          {% else %}
+            <div class="mb-3"></div> {% endif %}
 
-<div class="row">
-  {% for product in featured_products %}
-  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-    <div class="card h-100 shadow-sm border-0">
-      <a href="{% url 'product_detail' product.slug %}">
-        {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-        {% else %}
-          <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
-        {% endif %}
-      </a>
-      <div class="card-body d-flex flex-column">
-        <h6 class="card-title text-truncate">
-           <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
-        </h6>
-
-        <p class="text-muted mb-1">Rs. {{ product.price }}</p>
-        {% if product.old_price %}
-          <small class="text-decoration-line-through text-danger">Rs. {{ product.old_price }}</small>
-        {% endif %}
-        <div class="mt-auto">
-          <!-- Add to Cart -->
-          <form method="post" action="{% url 'add_to_cart' product.id %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-outline-primary">
-              <i class="fas fa-shopping-cart"></i> Add to Cart
-            </button>
-          </form>
-          <!-- Quick Order -->
-          <form method="post" action="{% url 'place_order' %}" class="d-inline">
-            {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{ product.id }}">
-            <button type="submit" class="btn btn-sm btn-success">
-              <i class="fas fa-check"></i> Order Now
-            </button>
-          </form>
+          <div class="mt-auto d-grid gap-2">
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-primary w-100">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+            </form>
+            <form method="post" action="{% url 'place_order' %}">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button type="submit" class="btn btn-success w-100">
+                <i class="fas fa-bolt"></i> Order Now
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    {% empty %}
+      <div class="col-12"><p>No featured products available.</p></div>
+    {% endfor %}
   </div>
-  {% empty %}
-    <p>No featured products available.</p>
-  {% endfor %}
-</div>
 
+  <h3 class="mb-4 fw-bold border-bottom pb-2">All Products</h3>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+    {% for product in all_products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm border-0 position-relative">
+        <a href="{% url 'product_detail' product.slug %}">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top p-3 bg-white" style="height: 200px; object-fit: contain;" alt="{{ product.name }}">
+          {% else %}
+            <img src="{% static 'images/placeholder.png' %}" class="card-img-top p-3 bg-white" style="height: 200px; object-fit: contain;" alt="No image">
+          {% endif %}
+        </a>
 
+        <div class="card-body d-flex flex-column text-center bg-light rounded-bottom">
+          <h6 class="card-title text-truncate mb-2">
+              <a href="{% url 'product_detail' product.slug %}" class="text-dark text-decoration-none fw-bold">{{ product.name }}</a>
+          </h6>
 
-<div class="row">
-  {% for product in all_products %}
-  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-    <div class="card h-100 shadow-sm border-0">
-      <a href="{% url 'product_detail' product.slug %}">
-        {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-        {% else %}
-          <img src="{% static 'images/placeholder.png' %}" class="card-img-top" alt="No image">
-        {% endif %}
-      </a>
-      <div class="card-body d-flex flex-column">
-        <h6 class="card-title text-truncate">
-            <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
-        </h6>
+          <p class="text-danger fw-bold mb-1 fs-5">Rs. {{ product.price }}</p>
+          {% if product.old_price %}
+            <small class="text-decoration-line-through text-muted mb-3">Rs. {{ product.old_price }}</small>
+          {% else %}
+             <div class="mb-3"></div> {% endif %}
 
-        <p class="text-muted mb-1">Rs. {{ product.price }}</p>
-        {% if product.old_price %}
-          <small class="text-decoration-line-through text-danger">Rs. {{ product.old_price }}</small>
-        {% endif %}
-        <div class="mt-auto">
-          <!-- Add to Cart -->
-          <form method="post" action="{% url 'add_to_cart' product.id %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-outline-primary">
-              <i class="fas fa-shopping-cart"></i> Add to Cart
-            </button>
-          </form>
-          <!-- Quick Order -->
-          <form method="post" action="{% url 'place_order' %}" class="d-inline">
-            {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{ product.id }}">
-            <button type="submit" class="btn btn-sm btn-success">
-              <i class="fas fa-check"></i> Order Now
-            </button>
-          </form>
+          <div class="mt-auto d-grid gap-2">
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-primary w-100">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+              </button>
+            </form>
+            <form method="post" action="{% url 'place_order' %}">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button type="submit" class="btn btn-success w-100">
+                <i class="fas fa-bolt"></i> Order Now
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    {% empty %}
+      <div class="col-12"><p>No products available.</p></div>
+    {% endfor %}
   </div>
-  {% empty %}
-    <p>No products available.</p>
-  {% endfor %}
-</div>
 
+</div>
 {% endblock %}

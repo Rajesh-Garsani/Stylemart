@@ -1,62 +1,72 @@
 {% load currency %}
-<header class="site-header">
-  <div class="header-inner">
+<header class="site-header sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
 
-   {# Left: Home button #}
-<div id="home-button">
-  <a href="{% url 'home' %}" class="btn btn-outline-primary">
-    <i class="fas fa-home"></i>
-  </a>
-</div>
-
-
-
-
-
-
-
-    {# Middle: Categories #}
-    <nav class="main-categories flex-grow-1">
-      <ul>
-        {% for category in categories %}
-          <li><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></li>
-
-        {% endfor %}
-      </ul>
-    </nav>
-
-    {# Right: Cart + Profile/Login #}
-    <div class="header-actions">
-      <a href="{% url 'view_cart' %}" class="btn btn-cart">
-        <i class="fas fa-shopping-cart"></i>
-        {% if user.is_authenticated %}
-          {% with cart_count=user.cart_set.count %}
-            {% if cart_count > 0 %}
-              <span class="badge bg-danger">{{ cart_count }}</span>
-            {% endif %}
-          {% endwith %}
-        {% endif %}
+      {# Left: Home button/Brand #}
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <span class="btn btn-outline-primary rounded-circle p-2 lh-1">
+          <i class="fas fa-home"></i>
+        </span>
+        <span class="ms-2 fw-bold text-white d-none d-sm-inline">StyleMart</span>
       </a>
 
-      <!-- Profile Dropdown -->
-<div class="dropdown">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="profileDropdown"
-     data-bs-toggle="dropdown" aria-expanded="false">
-    <i class="fas fa-user"></i> Profile
-  </a>
+      {# Mobile Toggle Button #}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-    {% if user.is_authenticated %}
-      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-      <li><a class="dropdown-item" href="{% url 'order_history' %}">My Orders</a></li>
-    {% else %}
-      <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-      <li><a class="dropdown-item" href="{% url 'signup' %}">Signup</a></li>
-    {% endif %}
-  </ul>
-</div>
+      {# Collapsible Content #}
+      <div class="collapse navbar-collapse" id="navbarContent">
 
+        {# Middle: Categories #}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          {% for category in categories %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'category_detail' category.slug %}">{{ category.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {# Search Bar (Moved from home.html) #}
+        <form method="get" action="{% url 'haystack_search' %}" class="nav-search-form me-lg-3">
+          <input type="text" name="q" class="form-control" placeholder="Search products..." value="{{ request.GET.q|default:'' }}">
+          <button type="submit" class="btn"><i class="fas fa-search"></i></button>
+        </form>
+
+        {# Right: Cart + Profile #}
+        <div class="header-actions d-flex gap-2">
+          <a href="{% url 'view_cart' %}" class="btn btn-info text-white position-relative">
+            <i class="fas fa-shopping-cart"></i>
+            {% if user.is_authenticated %}
+              {% with cart_count=user.cart_set.count %}
+                {% if cart_count > 0 %}
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ cart_count }}
+                  </span>
+                {% endif %}
+              {% endwith %}
+            {% endif %}
+          </a>
+
+          <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user"></i> <span class="d-none d-md-inline">Profile</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              {% if user.is_authenticated %}
+                <li><a class="dropdown-item" href="{% url 'order_history' %}">My Orders</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                <li><a class="dropdown-item" href="{% url 'signup' %}">Signup</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+
+      </div>
     </div>
-
-  </div>
+  </nav>
 </header>

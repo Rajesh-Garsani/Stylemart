@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile, Order
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Review
 
 
 class SignupForm(UserCreationForm):
@@ -36,3 +37,14 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ["status"]
+
+
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["rating", "comment"]
+        widgets = {
+            "rating": forms.RadioSelect(choices=[(i, str(i)) for i in range(1, 6)])
+        }

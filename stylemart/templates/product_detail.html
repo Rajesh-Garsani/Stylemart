@@ -1,11 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block content %}
+{% load currency %}  {% block content %}
 <div class="container my-5">
   <div class="product-detail-container">
 
-    <!-- Left: Product Image -->
     <div class="product-gallery">
       <div class="main-image">
         {% if product.image %}
@@ -16,15 +14,14 @@
       </div>
     </div>
 
-    <!-- Right: Product Info -->
     <div class="product-info">
       <h1>{{ product.name }}</h1>
       <p class="product-category">Category: {{ product.category.name }}</p>
 
       {% if product.old_price %}
-        <p class="old-price">Rs. {{ product.old_price }}</p>
+        <p class="old-price">{{ product.old_price|pkr }}</p>
       {% endif %}
-      <p class="current-price">Rs. {{ product.price }}</p>
+      <p class="current-price">{{ product.price|pkr }}</p>
 
       <p class="product-description">{{ product.description }}</p>
 

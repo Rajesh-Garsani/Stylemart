@@ -24,6 +24,13 @@
                 {{ product.name }}
               </a>
             </h5>
+            <form method="post" action="{% url 'add_to_wishlist' product.id %}" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-sm btn-outline-danger" title="Add to Wishlist">
+        <i class="fas fa-heart"></i>
+    </button>
+</form>
+
 
             <!-- Price -->
             {% if product.old_price %}

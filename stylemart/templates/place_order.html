@@ -1,25 +1,107 @@
-{% extends 'base.html' %}
-{% load currency %}
+{% extends "base.html" %}
+{% load static %}
 {% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row g-4">
 
-<h2>Checkout</h2>
-<form method="post">
-  {% csrf_token %}
-  <div class="form-group">
-    <label>Full Name</label>
-    <input type="text" name="full_name" class="form-control" required>
-  </div>
-  <div class="form-group">
-    <label>Address</label>
-    <textarea name="address" class="form-control" required></textarea>
-  </div>
-  <div class="form-group">
-    <label>Phone</label>
-    <input type="text" name="phone" class="form-control" required>
-  </div>
-    <input type="radio" name="payment_method" value="COD" checked> Cash on Delivery
-    <input type="radio" name="payment_method" value="JazzCash"> JazzCash
+        <div class="col-lg-7">
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+                    <h4 class="fw-bold text-dark mb-0"><i class="fas fa-shipping-fast text-primary me-2"></i> Delivery Details</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="{% url 'place_order' %}">
+                        {% csrf_token %}
 
-  <button type="submit" class="btn btn-primary">Place Order</button>
-</form>
+                        {% if product_id %}
+                            <input type="hidden" name="product_id" value="{{ product_id }}">
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-secondary">Full Name</label>
+                            <input type="text" name="full_name" class="form-control form-control-lg bg-light" placeholder="e.g. John Doe" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-secondary">Phone Number</label>
+                            <input type="text" name="phone" class="form-control form-control-lg bg-light" placeholder="e.g. 03XXXXXXXXX" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary">Full Address</label>
+                            <textarea name="address" class="form-control form-control-lg bg-light" rows="3" placeholder="Street, Sector, City" required></textarea>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mt-5 mb-3"><i class="fas fa-wallet text-primary me-2"></i> Payment Method</h5>
+                        <div class="d-flex flex-column flex-md-row gap-3 mb-4">
+                            <div class="form-check flex-fill border rounded-3 p-3 text-center position-relative method-card">
+                                <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="payment_method" value="COD" id="cod" checked>
+                                <label class="form-check-label d-block fw-semibold stretched-link cursor-pointer" for="cod">
+                                    <i class="fas fa-money-bill-wave fa-2x text-success mb-2"></i><br>
+                                    Cash on Delivery
+                                </label>
+                            </div>
+                            <div class="form-check flex-fill border rounded-3 p-3 text-center position-relative method-card">
+                                <input class="form-check-input position-absolute top-0 end-0 m-2" type="radio" name="payment_method" value="JazzCash" id="jazzcash">
+                                <label class="form-check-label d-block fw-semibold stretched-link cursor-pointer" for="jazzcash">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/JazzCash_logo.png" style="height: 30px;" class="mb-2"><br>
+                                    JazzCash Wallet
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow mt-2">
+                            Confirm Order <i class="fas fa-check-circle ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold border-bottom pb-3 mb-4">Order Summary</h5>
+
+                    {% for item in cart_items %}
+                    <div class="d-flex align-items-center mb-3">
+                        {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="rounded border p-1" style="width: 70px; height: 70px; object-fit: contain; background: #fff;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="rounded border p-1" style="width: 70px; height: 70px; object-fit: contain; background: #fff;">
+                        {% endif %}
+                        <div class="ms-3 flex-grow-1">
+                            <h6 class="mb-0 fw-bold text-dark">{{ item.product.name }}</h6>
+                            <small class="text-muted">Quantity: {{ item.quantity }}</small>
+                        </div>
+                        <div class="fw-bold text-dark ms-2">
+                            Rs. {% if item.total_price %}{{ item.total_price }}{% else %}{{ item.product.price }}{% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <hr class="text-muted mt-4 mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted fw-semibold">Subtotal</span>
+                        <span class="fw-semibold">Rs. {{ total_amt }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-muted fw-semibold">Shipping Fee</span>
+                        <span class="text-success fw-bold">Free</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded border">
+                        <span class="fw-bold fs-5 text-dark">Total Amount</span>
+                        <span class="fw-bold fs-4 text-danger">Rs. {{ total_amt }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .method-card { transition: all 0.3s ease; background: #fff;}
+    .method-card:hover { border-color: var(--primary) !important; background: #f8f9fa; }
+    .form-check-input:checked ~ label { color: var(--primary); }
+</style>
 {% endblock %}
